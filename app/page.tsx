@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, Award, ShieldCheck, Users, Calendar, MapPin, Trophy } from 'lucide-react';
-import NewsCard from '../../components/NewsCard';
-import { CATEGORIES } from '../../constants';
-import { RoutePath, NewsArticle, Tournament } from '../../models/types';
-import { pokerService } from '../../services/PokerService';
+import NewsCard from '../components/NewsCard';
+import { CATEGORIES } from '../constants';
+import { RoutePath, NewsArticle, Tournament } from '../models/types';
+import { pokerService } from '../services/PokerService';
 
 const Home: React.FC = () => {
   // Controller Logic: Fetching data from Service
