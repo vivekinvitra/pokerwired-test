@@ -2,12 +2,8 @@
   "name": "pokerwired-redux",
   "main": "src/worker.ts",
   "compatibility_date": "2025-12-18",
-  "kv_namespaces": [
-    {
-       "directory": "dist",
-      "binding": "__STATIC_CONTENT",
-      "id": "37791e91791d489cbe4f8be178b8f5b9",
-      "preview_id": "37791e91791d489cbe4f8be178b8f5b9"
-    }
-  ]
+  "assets": {
+    "directory": "dist",
+    "binding": "__STATIC_CONTENT"
+  }
 }
