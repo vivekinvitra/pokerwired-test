@@ -1,26 +1,12 @@
-import sql from 'mssql';
-
 /**
- * Database Singleton for MSSQL Connection.
- * NOTE: This class is designed for Server-Side execution (Node.js/Workers).
- * In a client-side browser preview, importing 'mssql' may cause build errors 
- * depending on the bundler configuration.
+ * Database Singleton for Data Access.
+ * In a browser SPA environment, direct TCP connections to MSSQL are not possible.
+ * This class serves as a shell to maintain the PokerService structure while
+ * allowing for mock data fallback.
  */
 class Database {
   private static instance: Database;
-  private pool: sql.ConnectionPool | null = null;
   private isConnected: boolean = false;
-
-  private config: sql.config = {
-    user: process.env.DB_USER || 'sa',
-    password: process.env.DB_PASSWORD || 'password',
-    server: process.env.DB_SERVER || 'localhost',
-    database: process.env.DB_NAME || 'PokerWiredDB',
-    options: {
-      encrypt: true, // Use for Azure
-      trustServerCertificate: true, // Change to false for production
-    },
-  };
 
   private constructor() {}
 
@@ -31,39 +17,21 @@ class Database {
     return Database.instance;
   }
 
-  public async connect(): Promise<sql.ConnectionPool> {
-    if (this.isConnected && this.pool) {
-      return this.pool;
-    }
-
-    try {
-      this.pool = await sql.connect(this.config);
-      this.isConnected = true;
-      console.log('Connected to MSSQL Database');
-      return this.pool;
-    } catch (err) {
-      console.error('Database Connection Failed! Using Mock Data Fallback.', err);
-      throw err;
-    }
+  /**
+   * Mock connect method for browser compatibility.
+   */
+  public async connect(): Promise<any> {
+    this.isConnected = true;
+    return Promise.resolve({});
   }
 
+  /**
+   * Mock query method. In a production SPA, this would call a REST/GraphQL API.
+   * For this project, PokerService handles the fallback to Constants.
+   */
   public async query<T>(queryString: string, params?: { [key: string]: any }): Promise<T[]> {
-    try {
-      const pool = await this.connect();
-      const request = pool.request();
-
-      if (params) {
-        Object.keys(params).forEach((key) => {
-          request.input(key, params[key]);
-        });
-      }
-
-      const result = await request.query(queryString);
-      return result.recordset as T[];
-    } catch (error) {
-      console.error('Query execution failed:', error);
-      throw error;
-    }
+    console.warn('Database query called in browser context. Falling back to mock data.');
+    throw new Error('Direct database access not available in browser.');
   }
 }
 
