@@ -1,9 +1,0 @@
-{
-  "name": "pokerwired-redux",
-  "main": "src/worker.ts",
-  "compatibility_date": "2025-12-18",
-  "assets": {
-    "directory": "dist",
-    "binding": "__STATIC_CONTENT"
-  }
-}
